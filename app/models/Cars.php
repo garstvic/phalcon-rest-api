@@ -2,9 +2,10 @@
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Message;
-use Phalcon\Mvc\Validator\PresenceOf;
-use Phalcon\Mvc\Validator\Uniqueness;
-use Phalcon\Mvc\Validator\Regex;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\PresenceOf as PresenceOfValidator;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\Regex as RegexValidator;
 
 class Cars extends Model
 {
@@ -21,60 +22,58 @@ class Cars extends Model
     // Validations
     public function validation()
     {
-        $this->validate(
-            new PresenceOf(
-                array(
-                    'field'   => 'license_plate_no',
-                    'message' => 'The license plate number is required!'
-                )   
-            )  
+        $validator = new Validation();
+
+        $validator->add(
+            'license_plate_no',
+            new PresenceOfValidator([
+                'model' => $this,
+                'message' => 'The license plate number is required!'
+            ])
         );
         
-        $this->validate(
-            new PresenceOf(
-                array(
-                    'field'   => 'engine_no',
-                    'message' => 'The engine number is required!'
-                )   
-            )  
-        );
+        $validator->add(
+            'engine_no',
+            new PresenceOfValidator([
+                'model' => $this,
+                'message' => 'The engine number is required!'
+            ])
+        ); 
         
-        $this->validate(
-            new PresenceOf(
-                array(
-                    'field'   => 'owner_name',
-                    'message' => 'The owner name is required!'
-                )    
-            )  
-        );
+        $validator->add(
+            'owner_name',
+            new PresenceOfValidator([
+                'model' => $this,
+                'message' => 'The owner name is required!'
+            ])
+        );        
+
+        $validator->add(
+            'license_plate_no',
+            new UniquenessValidator([
+                'model' => $this,
+                'message' => 'The license plate number should be unique!'
+            ])
+        );   
+
+        $validator->add(
+            'engine_no',
+            new UniquenessValidator([
+                'model' => $this,
+                'message' => 'The engine number should be unique!'
+            ])
+        ); 
         
-        $this->validate(
-            new Uniqueness(
-                array(
-                    'field'   => 'license_plate_no',
-                    'message' => 'The license plate number should be unique!'
-                )    
-            )  
-        );
-        
-        $this->validate(
-            new Uniqueness(
-                array(
-                    'field'   => 'engine_no',
-                    'message' => 'The engine number should be unique!'
-                )    
-            )  
-        );
-        
-        $this->validate(
-            new Regex(
-                array(
-                    'field'   => 'license_plate_no',
-                    'pattern' => '/^[A-Z]{3}-[0-9]{3}$/',
-                    'message' => 'Invalid license plate number!'
-                )    
-            )  
-        );
+        $validator->add(
+            'license_plate_no',
+            new RegexValidator([
+                'model' => $this,
+                'pattern' => '/^[A-Z]{3}-[0-9]{3}$/',
+                'message' => 'Invalid license plate number!'
+            ])
+        );        
+
+        $this->validate($validator);
         
         if ($this->car_model_year < 0)
         {

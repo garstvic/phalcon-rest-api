@@ -42,12 +42,13 @@ $app->get(
         {
             $data[] = array(
                 'id'                => $car->id,
-                'owner_date'        => $car->owner_name,
+                'owner_name'        => $car->owner_name,
                 'reg_date'          => $car->reg_date,
                 'license_plate_no'  => $car->license_plate_no,
                 'engine_no'         => $car->engine_no,
                 'tax_payment'       => $car->tax_payment,
                 'car_model'         => $car->car_model,
+                'car_model_year'    => $car->car_model_year,
                 'seating_capacity'  => $car->seating_capacity,
                 'horse_power'       => $car->horse_power
             );
@@ -69,12 +70,13 @@ $app->get(
         
         $data = array(
             'id'                => $car->id,
-            'owner_date'        => $car->owner_name,
+            'owner_name'        => $car->owner_name,
             'reg_date'          => $car->reg_date,
             'license_plate_no'  => $car->license_plate_no,
             'engine_no'         => $car->engine_no,
             'tax_payment'       => $car->tax_payment,
             'car_model'         => $car->car_model,
+            'car_model_year'    => $car->car_model_year,
             'seating_capacity'  => $car->seating_capacity,
             'horse_power'       => $car->horse_power
         );
@@ -110,12 +112,13 @@ $app->get(
                     'status'    => 'FOUND',
                     'data'      => array(
                         'id'                => $car->id,
-                        'owner_date'        => $car->owner_name,
+                        'owner_name'        => $car->owner_name,
                         'reg_date'          => $car->reg_date,
                         'license_plate_no'  => $car->license_plate_no,
                         'engine_no'         => $car->engine_no,
                         'tax_payment'       => $car->tax_payment,
                         'car_model'         => $car->car_model,
+                        'car_model_year'    => $car->car_model_year,
                         'seating_capacity'  => $car->seating_capacity,
                         'horse_power'       => $car->horse_power
                     )
@@ -136,7 +139,7 @@ $app->post(
             INSERT INTO Cars (
                 owner_name, 
                 reg_date, 
-                license_plate_on, 
+                license_plate_no, 
                 engine_no, 
                 tax_payment, 
                 car_model, 
@@ -146,23 +149,24 @@ $app->post(
             VALUES (
                 :owner_name:, 
                 :reg_date:, 
-                :license_plate_on:, 
+                :license_plate_no:, 
                 :engine_no:, 
                 :tax_payment:, 
                 :car_model:, 
                 :car_model_year:, 
-                :seating_capacity:
+                :seating_capacity:,
+                :horse_power:
             )';
             
         $car = $app->request->getJsonRawBody();
         $values = array(
-            'id'                => $car->id,
-            'owner_date'        => $car->owner_name,
+            'owner_name'        => $car->owner_name,
             'reg_date'          => $car->reg_date,
             'license_plate_no'  => $car->license_plate_no,
             'engine_no'         => $car->engine_no,
             'tax_payment'       => $car->tax_payment,
             'car_model'         => $car->car_model,
+            'car_model_year'    => $car->car_model_year,
             'seating_capacity'  => $car->seating_capacity,
             'horse_power'       => $car->horse_power            
         );
@@ -175,7 +179,7 @@ $app->post(
         {
             $response->setStatusCode(201, 'Created');
             
-            $car->id = $results->getModel()->id;
+            $car->id = $result->getModel()->id;
             
             $response->setJsonContent(
                 array(
@@ -190,7 +194,7 @@ $app->post(
             
             $errors = array();
             
-            foreach($results->getMessages() as $message)
+            foreach($result->getMessages() as $message)
             {
                 $errors[] = $message->getMessage();
             }
@@ -212,10 +216,10 @@ $app->put(
     '/api/cars/{id:[0-9]+}', 
     function($id) use ($app)
     {
-        $phql = 'UPDATES Cars SET
+        $phql = 'UPDATE Cars SET
                     owner_name = :owner_name:,
-                    reg_date = :reg_date,
-                    license_plate_no = :license_plate_no,
+                    reg_date = :reg_date:,
+                    license_plate_no = :license_plate_no:,
                     engine_no = :engine_no:,
                     tax_payment = :tax_payment:,
                     car_model = :car_model:,
@@ -228,12 +232,13 @@ $app->put(
         
         $values = array(
             'id'                => $id,
-            'owner_date'        => $updatedCarValues->owner_name,
+            'owner_name'        => $updatedCarValues->owner_name,
             'reg_date'          => $updatedCarValues->reg_date,
             'license_plate_no'  => $updatedCarValues->license_plate_no,
             'engine_no'         => $updatedCarValues->engine_no,
             'tax_payment'       => $updatedCarValues->tax_payment,
             'car_model'         => $updatedCarValues->car_model,
+            'car_model_year'    => $updatedCarValues->car_model_year,
             'seating_capacity'  => $updatedCarValues->seating_capacity,
             'horse_power'       => $updatedCarValues->horse_power           
         );
