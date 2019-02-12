@@ -10,7 +10,7 @@ class Cars extends Model
 {
     public $owner_name;             // MR JOHN DOE
     public $reg_date;               // 1997-09-08
-    public $licence_plate_no;       // ABC-007
+    public $license_plate_no;       // ABC-007
     public $engine_no;              // 3488057
     public $tax_payment;            // 1998-06-30
     public $car_model;              // MOYOTA MOROLLA
@@ -24,8 +24,8 @@ class Cars extends Model
         $this->validate(
             new PresenceOf(
                 array(
-                    'field' => 'licence_plate_no',
-                    'message' => 'The licence plate number is required!'
+                    'field'   => 'license_plate_no',
+                    'message' => 'The license plate number is required!'
                 )   
             )  
         );
@@ -33,7 +33,7 @@ class Cars extends Model
         $this->validate(
             new PresenceOf(
                 array(
-                    'field' => 'engine_no',
+                    'field'   => 'engine_no',
                     'message' => 'The engine number is required!'
                 )   
             )  
@@ -42,7 +42,7 @@ class Cars extends Model
         $this->validate(
             new PresenceOf(
                 array(
-                    'field' => 'owner_name',
+                    'field'   => 'owner_name',
                     'message' => 'The owner name is required!'
                 )    
             )  
@@ -51,8 +51,8 @@ class Cars extends Model
         $this->validate(
             new Uniqueness(
                 array(
-                    'field' => 'licence_plate_no',
-                    'message' => 'The licence plate number should be unique!'
+                    'field'   => 'license_plate_no',
+                    'message' => 'The license plate number should be unique!'
                 )    
             )  
         );
@@ -60,7 +60,7 @@ class Cars extends Model
         $this->validate(
             new Uniqueness(
                 array(
-                    'field' => 'engine_no',
+                    'field'   => 'engine_no',
                     'message' => 'The engine number should be unique!'
                 )    
             )  
@@ -69,9 +69,9 @@ class Cars extends Model
         $this->validate(
             new Regex(
                 array(
-                    'field' => 'licence_plate_no',
+                    'field'   => 'license_plate_no',
                     'pattern' => '/^[A-Z]{3}-[0-9]{3}$/',
-                    'message' => 'Invalid licence plate number!'
+                    'message' => 'Invalid license plate number!'
                 )    
             )  
         );
